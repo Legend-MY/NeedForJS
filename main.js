@@ -20,8 +20,8 @@ const keys = {
 const setting = {
   start: false,
   score: 0,
-  speed: 3,
-  traffic: 3
+  speed: 5,
+  traffic: 1
 };
 
 function getQuantityElements(heightElement) {
@@ -44,7 +44,7 @@ function startGame() {
     enemy.y = -100 * setting.traffic * (i + 1);
     enemy.style.left = Math.floor(Math.random() * (gameArea.offsetWidth - 50)) + 'px';
     enemy.style.top = enemy.y + 'px';
-    enemy.style.background = 'transparent url("./image/enemy.png") center / cover no-repeat;';
+    enemy.style.background = 'transparent url("./image/enemy.png") center / cover no-repeat';
     gameArea.appendChild(enemy);
   }
 
@@ -56,10 +56,10 @@ function startGame() {
 }
 
 function playGame() {
-  if (setting.start && setting.x > 0) {
+  if (setting.start) {
     moveRoad();
     moveEnemy();
-    if (keys.ArrowLeft) {
+    if (keys.ArrowLeft && setting.x > 0) {
       setting.x -= setting.speed;
     }
 
