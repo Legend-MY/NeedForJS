@@ -5,14 +5,18 @@ audio.type = 'audio/mp3';
 audio.style.cssText = 'position: absolute; top: -1000px';
 
 const score = document.querySelector('.score'),
-  start = document.querySelector('.start'),
+  easy = document.querySelector('.easy'),
+  normal = document.querySelector('.normal'),
+  hard = document.querySelector('.hard'),
   gameArea = document.querySelector('.gameArea'),
   car = document.createElement('div');
 
 car.classList.add('car');
 
 
-start.addEventListener('click', startGame);
+easy.addEventListener('click', easyStart);
+normal.addEventListener('click', startGame);
+hard.addEventListener('click', hardStart);
 document.addEventListener('keydown', startRun);
 document.addEventListener('keyup', stopRun);
 
@@ -34,8 +38,22 @@ function getQuantityElements(heightElement) {
   return document.documentElement.clientHeight / heightElement + 1;
 }
 
+function hardStart() {
+  setting.speed = 8;
+  setting.traffic = 2;
+  startGame();
+}
+
+function easyStart() {
+  setting.speed = 3;
+  setting.traffic = 4;
+  startGame();
+}
+
 function startGame() {
-  start.classList.add('hide');
+  easy.classList.add('hide');
+  normal.classList.add('hide');
+  hard.classList.add('hide');
   gameArea.innerHTML = '';
 
   for (let i = 0; i < getQuantityElements(100); i++) {
@@ -73,6 +91,7 @@ function playGame() {
   if (setting.start) {
     setting.score += setting.speed;
     score.innerHTML = 'SCORE<br>' + setting.score;
+    score.style.cssText = 'display: block';
     moveRoad();
     moveEnemy();
     if (keys.ArrowLeft && setting.x > 0) {
@@ -98,13 +117,17 @@ function playGame() {
 }
 
 function startRun(event) {
-  event.preventDefault();
-  keys[event.key] = true;
+  if (keys.hasOwnProperty(event.key)) {
+    event.preventDefault();
+    keys[event.key] = true;
+  }
 }
 
 function stopRun(event) {
-  event.preventDefault();
-  keys[event.key] = false;
+  if (keys.hasOwnProperty(event.key)) {
+    event.preventDefault();
+    keys[event.key] = false;
+  }
 }
 
 function moveRoad() {
@@ -131,7 +154,9 @@ function moveEnemy() {
       carRect.bottom >= enemyRect.top) {
       setting.start = false;
       console.warn('DTP');
-      start.classList.remove('hide');
+      easy.classList.remove('hide');
+      normal.classList.remove('hide');
+      hard.classList.remove('hide');
       audio.remove();
       score.style.top = start.offsetHeight;
     }

@@ -79,9 +79,7 @@ table {
 .start {
   position: absolute;
   left: 0;
-  top: 0;
-  width: 100%;
-  margin: 0;
+  width: 40%;
   padding: 2rem 0;
   text-align: center;
   z-index: 200;
@@ -92,11 +90,18 @@ table {
   font-family: sans-serif;
   font-weight: 700;
 }
+.normal {
+  top: 90px;
+}
+.hard {
+  top: 180px;
+}
 
 .score {
+  display: none;
   position: absolute;
   top: 0;
-  left: 0;
+  right: 0;
   width: 300px;
   background-color: #72e8b7;
   padding: 20px 10px;
