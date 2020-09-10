@@ -1,3 +1,9 @@
+const maxEnemy = 3;
+const audio = document.createElement('embed');
+audio.src = './audio.mp3';
+audio.type = 'audio/mp3';
+audio.style.cssText = 'position: absolute; top: -1000px';
+
 const score = document.querySelector('.score'),
   start = document.querySelector('.start'),
   gameArea = document.querySelector('.gameArea'),
@@ -21,7 +27,7 @@ const setting = {
   start: false,
   score: 0,
   speed: 5,
-  traffic: 1
+  traffic: 3
 };
 
 function getQuantityElements(heightElement) {
@@ -30,6 +36,8 @@ function getQuantityElements(heightElement) {
 
 function startGame() {
   start.classList.add('hide');
+  gameArea.innerHTML = '';
+
   for (let i = 0; i < getQuantityElements(100); i++) {
     const line = document.createElement('div');
     line.classList.add('line');
@@ -41,15 +49,21 @@ function startGame() {
   for (let i = 0; i < getQuantityElements(100 * setting.traffic); i++) {
     const enemy = document.createElement('div');
     enemy.classList.add('enemy');
+    const randomEnemy = Math.floor(Math.random() * maxEnemy) + 1;
     enemy.y = -100 * setting.traffic * (i + 1);
     enemy.style.left = Math.floor(Math.random() * (gameArea.offsetWidth - 50)) + 'px';
     enemy.style.top = enemy.y + 'px';
-    enemy.style.background = 'transparent url("./image/enemy.png") center / cover no-repeat';
+    enemy.style.background = `transparent url("./image/enemy${randomEnemy}.png") center / cover no-repeat`;
     gameArea.appendChild(enemy);
   }
 
+  setting.score = 0;
   setting.start = true;
   gameArea.appendChild(car);
+  document.body.append(audio);
+  car.style.left = '125px';
+  car.style.top = 'auto';
+  car.style.bottom = '10px';
   setting.x = car.offsetLeft;
   setting.y = car.offsetTop;
   requestAnimationFrame(playGame);
@@ -57,6 +71,8 @@ function startGame() {
 
 function playGame() {
   if (setting.start) {
+    setting.score += setting.speed;
+    score.innerHTML = 'SCORE<br>' + setting.score;
     moveRoad();
     moveEnemy();
     if (keys.ArrowLeft && setting.x > 0) {
@@ -106,6 +122,20 @@ function moveRoad() {
 function moveEnemy() {
   let enemy = document.querySelectorAll('.enemy');
   enemy.forEach(function (item) {
+    let carRect = car.getBoundingClientRect();
+    let enemyRect = item.getBoundingClientRect();
+
+    if (carRect.top <= enemyRect.bottom &&
+      carRect.right >= enemyRect.left &&
+      carRect.left <= enemyRect.right &&
+      carRect.bottom >= enemyRect.top) {
+      setting.start = false;
+      console.warn('DTP');
+      start.classList.remove('hide');
+      audio.remove();
+      score.style.top = start.offsetHeight;
+    }
+
     item.y += setting.speed / 2;
     item.style.top = item.y + 'px';
     if (item.y >= document.documentElement.clientHeight) {
