@@ -57,6 +57,7 @@ table {
 .game {
   overflow: hidden;
   height: 100vh;
+  position: relative;
 }
 
 .gameArea {
@@ -79,25 +80,46 @@ table {
 .start {
   position: absolute;
   left: 0;
-  width: 40%;
+  width: 30%;
   padding: 2rem 0;
   text-align: center;
   z-index: 200;
-  color: #fff;
-  font-size: 1.5rem;
-  background-color: #000;
-  cursor: pointer;
-  font-family: sans-serif;
+  font-family: 'Oswald', sans-serif;
+  font-size: 2.5rem;
   font-weight: 700;
+  font-style: italic;
+  color: #fff;
+  border-radius: 10px;
+  background-color: #5c1ec7;
+  cursor: pointer;
+  margin: 30px;
+  animation: play-pulse 0.4s ease-in-out alternate 0.4s infinite;
+  transition: all 0.5s;
 }
-.normal {
-  top: 90px;
-}
-.hard {
-  top: 180px;
+.start:hover {
+  color: #5c1ec7;
+  border: 1px solid #5c1ec7;
+  background-color: #fff;
+  box-shadow: 0px 0px 38px 3px rgba(92,30,199,1);
 }
 
-.score {
+@keyframes play-pulse {
+  0% {
+    transform: scale(1.02);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.normal {
+  top: 20%;
+}
+.hard {
+  top: 40%;
+}
+
+.score, .BestScore {
   display: none;
   position: absolute;
   top: 0;
@@ -105,12 +127,16 @@ table {
   width: 300px;
   background-color: #72e8b7;
   padding: 20px 10px;
-  margin: 100px 20px;
   z-index: 200;
   font-size: 1.5rem;
   color: #fff;
   text-align: center;
-  font-family: sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-weight: 500;
   border-radius: 10px;
+}
+
+.BestScore {
+  top: 90px;
+  background-color: #3b5bdb;
 }

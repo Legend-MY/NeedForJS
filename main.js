@@ -4,6 +4,8 @@ audio.src = './audio.mp3';
 audio.type = 'audio/mp3';
 audio.style.cssText = 'position: absolute; top: -1000px';
 
+const showBestScore = document.querySelector('.BestScore');
+
 const score = document.querySelector('.score'),
   easy = document.querySelector('.easy'),
   normal = document.querySelector('.normal'),
@@ -91,7 +93,7 @@ function playGame() {
   if (setting.start) {
     setting.score += setting.speed;
     score.innerHTML = 'SCORE<br>' + setting.score;
-    score.style.cssText = 'display: block';
+    score.style.cssText = 'display: block; margin: 10px';
     moveRoad();
     moveEnemy();
     if (keys.ArrowLeft && setting.x > 0) {
@@ -158,7 +160,12 @@ function moveEnemy() {
       normal.classList.remove('hide');
       hard.classList.remove('hide');
       audio.remove();
-      score.style.top = start.offsetHeight;
+      let theBestScore = localStorage.getItem('bestScore');
+      showBestScore.style.cssText = 'display: block; margin: 10px';
+      if (theBestScore < setting.score) {
+        localStorage.setItem('bestScore', setting.score);
+        showBestScore.innerHTML = 'The Best<br>' + setting.score;
+      }
     }
 
     item.y += setting.speed / 2;
