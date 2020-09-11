@@ -165,6 +165,8 @@ function moveEnemy() {
       if (theBestScore < setting.score) {
         localStorage.setItem('bestScore', setting.score);
         showBestScore.innerHTML = 'The Best<br>' + setting.score;
+      } else {
+        showBestScore.innerHTML = 'The Best<br>' + theBestScore;
       }
     }
 
